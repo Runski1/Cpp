@@ -1,2 +1,8 @@
+.clang-format
+.clangd
+build/*
+.cache
+.idea
+compile_commands.json
 *.out
 *.pdf
