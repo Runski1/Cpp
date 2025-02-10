@@ -1,8 +1,9 @@
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
+#include <hardware/timer.h>
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
-#include <iostream>
 
 class GPIOPin {
   public:
@@ -80,7 +81,9 @@ class Switch {
 class LightSwitch {
   public:
     LightSwitch(const int sw_pin, const int led_pin)
-        : led(Led(led_pin)), sw(Switch(sw_pin)) {last_pressed = 0;}
+        : led(Led(led_pin)), sw(Switch(sw_pin)) {
+        last_pressed = 0;
+    }
     void update_self();
 
   private:
@@ -90,22 +93,26 @@ class LightSwitch {
 };
 
 void LightSwitch::update_self() {
-    if (sw.is_pressed() && (time_us_32() / 1000 - last_pressed) > 1000) {
+    if (sw.is_pressed() && led.get_state())
         last_pressed = time_us_32();
-        led.set_state(true);
-    } else {
+    else if (sw.is_pressed()) {
+        last_pressed = time_us_32();
+        led.toggle();
+    }
+    else if ((time_us_32() - last_pressed) / 1000 > 1000) {
         led.set_state(false);
     }
 }
 
-int main() { 
+int main() {
+
+    stdio_init_all();
 
     LightSwitch led1 = LightSwitch(9, 20);
     LightSwitch led2 = LightSwitch(8, 21);
     LightSwitch led3 = LightSwitch(7, 22);
 
     while (true) {
-        printf("Hello world!\n");
         led1.update_self();
         led2.update_self();
         led3.update_self();

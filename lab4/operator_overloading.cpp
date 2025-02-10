@@ -1,10 +1,10 @@
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
@@ -19,7 +19,10 @@ class Item {
     void setPrice(const uint &price0) { price = price0; };
     friend ostream &operator<<(ostream &out, const Item &i);
     friend istream &operator>>(istream &in, Item &i);
-    friend bool operator<(const Item &item1, const Item &item2) {return item1.price < item2.price;}
+    friend bool operator<(const Item &item1, const Item &item2) {
+        return item1.price < item2.price;
+    }
+
   private:
     std::string name;
     int weight;
@@ -29,8 +32,7 @@ class Item {
 
 ostream &operator<<(ostream &out, const Item &i) {
     out << "{ \"Name\":\"" << i.name << "\", \"Weight\":" << i.weight
-        << ", \"Price\":" << i.price
-        << ", \"Count\":" << i.count << " }";
+        << ", \"Price\":" << i.price << ", \"Count\":" << i.count << " }";
     return out;
 };
 
@@ -68,9 +70,9 @@ int parse_json(vector<Item> &items, string &object) {
     istringstream stream(object);
     Item i;
     stream >> i;
-    items.push_back(i);
     if (stream.fail()) {
         if (stream.eof()) {
+            items.push_back(i);
             return 0;
         } else {
             cout << "stream fail\n";
@@ -138,7 +140,7 @@ int main() {
         }
     }
     print_items(items);
-    cout << "Choose an item to change 1-" << items.size() << ": "; 
+    cout << "Choose an item to change 1-" << items.size() << ": ";
     int item_num;
     cin >> item_num;
     cout << endl << "Set the new price: ";

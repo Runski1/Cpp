@@ -48,5 +48,3 @@ target_link_libraries(${PROJECT_NAME}
 # Disable usb output, enable uart output
 pico_enable_stdio_usb(${PROJECT_NAME} 0)
 pico_enable_stdio_uart(${PROJECT_NAME} 1)
-
-target_compile_options(${PROJECT_NAME} PRIVATE -std=c++17)
