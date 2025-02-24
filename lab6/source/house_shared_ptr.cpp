@@ -10,11 +10,13 @@ class House {
     House(const string &addr, double area, double price)
         : address(addr), area(area), price(price) {};
     ~House() {};
+    
     string getAddress() { return address; };
     void setAddress(string &addr) { address = addr; };
     void setArea(double &_area) { area = _area; };
     void setPrice(double &_price) { price = _price; };
     double getPricePerArea() { return price / area; };
+
     friend ostream &operator<<(ostream &out, const House &house);
 
   private:
@@ -34,10 +36,12 @@ class Apartment {
               shared_ptr<House> _house)
         : number(_number), area(_area), rent(_rent), house(_house) {};
     ~Apartment() {};
+
     string getAddress() { return house->getAddress(); }
     void setArea(double _area) { area = _area; };
     void setPrice(double _price) { rent = _price; };
     double getRentPerArea() const { return rent / area; };
+
     friend ostream &operator<<(ostream &out, const Apartment &apartment);
     friend bool operator<(Apartment &a1, const Apartment &a2) {
         return a1.rent < a2.rent;
