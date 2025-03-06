@@ -38,20 +38,21 @@ void test_generator(UniqueRng &ur, int count) {
 
 void UniqueRng::operator()(int count) {
     int number;
+    int v_len_max = upper - lower + 1;
     // generate count number of random numbers
     for (int i = 0; i < count; i++) {
-        // generate numbers while vector not full and until unique number is
-        // generated
-        if (numbers.size() >= (upper - lower + 1)) {
+        // error case has to be checked before do-while
+        if (numbers.size() >= (v_len_max)) {
             const std::string err_msg =
                 "Unable to produce unique random number. Tried to generate " +
                 std::to_string(count) + " random numbers. Got only " +
                 std::to_string(i);
             throw(std::runtime_error(err_msg));
         }
+        // generate numbers while vector not full and until unique number is
+        // generated
         do {
-            // cppreference used this kind to avoid bias
-            number = lower + rand() % (upper - lower + 1);
+            number = lower + rand() % (v_len_max);
         } while (find(numbers.begin(), numbers.end(), number) != numbers.end());
         numbers.push_back(number);
     }
