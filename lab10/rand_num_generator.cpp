@@ -47,7 +47,7 @@ void UniqueRng::operator()(int count) {
                 "Unable to produce unique random number. Tried to generate " +
                 std::to_string(count) + " random numbers. Got only " +
                 std::to_string(i);
-            throw(std::runtime_error(err_msg));
+            throw std::runtime_error(err_msg);
         }
         // generate numbers while vector not full and until unique number is
         // generated
